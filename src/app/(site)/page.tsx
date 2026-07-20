@@ -45,7 +45,7 @@ export default async function HomePage() {
             </Link>
             <Link href="/login">
               <Button className="w-full sm:w-auto bg-pmii-gold hover:bg-pmii-gold/90 text-white rounded-full px-8 py-6 text-lg font-bold transition-all shadow-lg hover:shadow-xl border-2 border-pmii-gold">
-                CBT BIMTES 2026
+                Login Pengurus
               </Button>
             </Link>
           </div>
