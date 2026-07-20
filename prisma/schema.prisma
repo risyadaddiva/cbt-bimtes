@@ -1,0 +1,267 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  PARTICIPANT
+}
+
+enum Category {
+  MIPA
+  SOSHUM
+  WAWASAN_KEBANGSAAN
+  LITERASI
+  TES_SKOLASTIK
+  KEAGAMAAN
+}
+
+enum ExamStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED
+}
+
+enum GroupStatus {
+  PENDING
+  IN_PROGRESS
+  SUBMITTED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// User & Auth
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  password  String
+  role      Role     @default(PARTICIPANT)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participant  Participant?
+  activityLogs ActivityLog[]
+
+  @@map("users")
+}
+
+model Participant {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @unique @db.ObjectId
+  name          String
+  school        String
+  track         Category // MIPA or SOSHUM
+  phone         String?
+  plainPassword String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examSessions ExamSession[]
+
+  @@map("participants")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Question Bank
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Question {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  category    Category
+  text        String
+  explanation String?
+  difficulty  Int      @default(1) // 1-5
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  choices     Choice[]
+  answers     Answer[]
+
+  @@map("questions")
+}
+
+model Choice {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  questionId String   @db.ObjectId
+  label      String   // A, B, C, D, E
+  text       String
+  isCorrect  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers    Answer[] @relation("SelectedChoice")
+
+  @@map("choices")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exam Session
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ExamSession {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  participantId  String     @db.ObjectId
+  status         ExamStatus @default(NOT_STARTED)
+  groupOrder     Json       // Array of Category in randomized order
+  startedAt      DateTime?
+  submittedAt    DateTime?
+  sessionToken   String     @unique @default(cuid())
+  tabSwitchCount Int        @default(0)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  participant    Participant    @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  sessionGroups  SessionGroup[]
+  result         Result?
+
+  @@map("exam_sessions")
+}
+
+model SessionGroup {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  examSessionId String      @db.ObjectId
+  category      Category
+  questionOrder Json        // Array of question IDs in randomized order
+  optionOrder   Json        // Map of questionId -> array of choiceIds in randomized order
+  status        GroupStatus @default(PENDING)
+  durationSecs  Int         // Total seconds for this group
+  startedAt     DateTime?
+  submittedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  examSession   ExamSession @relation(fields: [examSessionId], references: [id], onDelete: Cascade)
+  answers       Answer[]
+
+  @@map("session_groups")
+}
+
+model Answer {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionGroupId  String   @db.ObjectId
+  questionId      String   @db.ObjectId
+  selectedChoiceId String?  @db.ObjectId
+  isCorrect       Boolean  @default(false)
+  isMarkedReview  Boolean  @default(false)
+  answeredAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  sessionGroup    SessionGroup @relation(fields: [sessionGroupId], references: [id], onDelete: Cascade)
+  question        Question     @relation(fields: [questionId], references: [id])
+  selectedChoice  Choice?      @relation("SelectedChoice", fields: [selectedChoiceId], references: [id])
+
+  @@unique([sessionGroupId, questionId])
+  @@map("answers")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Results
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Result {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  examSessionId   String   @unique @db.ObjectId
+  totalScore      Float    @default(0)
+  scorePerCategory Json    // Map of Category -> score
+  totalCorrect    Int      @default(0)
+  totalIncorrect  Int      @default(0)
+  totalUnanswered Int      @default(0)
+  rank            Int?
+  percentile      Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  examSession     ExamSession @relation(fields: [examSessionId], references: [id], onDelete: Cascade)
+
+  @@map("results")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Activity Logs
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ActivityLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  action    String   // e.g. "TAB_SWITCH", "LOGIN", "ANSWER_SAVED", "EXAM_SUBMITTED"
+  metadata  Json?    // Additional context
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("activity_logs")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Web Profil — Berita & Galeri
+// ─────────────────────────────────────────────────────────────────────────────
+
+model NewsArticle {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String
+  coverImage  String?  // Google Drive link or URL
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  author      String   @default("Admin PMII")
+  category    String   @default("Berita")
+  tags        String[]
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("news_articles")
+}
+
+model GalleryAlbum {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String   @unique
+  title       String
+  description String?
+  coverImage  String?  // Google Drive link or URL
+  isPublished Boolean  @default(false)
+  eventDate   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  photos      GalleryPhoto[]
+
+  @@map("gallery_albums")
+}
+
+model GalleryPhoto {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  albumId     String   @db.ObjectId
+  imageUrl    String   // Google Drive link or URL
+  caption     String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  album       GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  @@map("gallery_photos")
+}

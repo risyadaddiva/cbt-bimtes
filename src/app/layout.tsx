@@ -1,0 +1,57 @@
+import type { Metadata } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
+import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+
+export const metadata: Metadata = {
+  title: {
+    default: "PMII UIN SGD Cabang Kabupaten Bandung",
+    template: "%s | PMII UIN SGD Cabang Kabupaten Bandung",
+  },
+  description:
+    "Sistem Computer Based Test (CBT) untuk BIMTES PMII 2026 - Komisariat UIN Sunan Gunung Djati Bandung. Platform tryout online dengan fitur randomisasi soal dan penilaian otomatis.",
+  keywords: ["PMII", "BIMTES", "CBT", "UIN Bandung", "tryout", "ujian online"],
+  authors: [{ name: "PMII Komisariat UIN SGD Bandung" }],
+  robots: "noindex,nofollow",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="id" suppressHydrationWarning>
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster position="top-right" richColors />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
