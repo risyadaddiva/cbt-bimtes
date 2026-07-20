@@ -51,7 +51,7 @@ export function Navbar() {
 
           <Link href="/login" className="hidden md:block">
             <Button className="bg-pmii-gold text-white hover:bg-pmii-gold/90 border-0 rounded px-4 py-2 font-medium">
-              CBT BIMTES
+              Login
             </Button>
           </Link>
 
@@ -83,7 +83,7 @@ export function Navbar() {
                 })}
                 <Link href="/login" onClick={() => setIsOpen(false)} className="mt-4">
                   <Button className="w-full bg-pmii-gold text-white hover:bg-pmii-gold/90">
-                    CBT BIMTES
+                    Login
                   </Button>
                 </Link>
               </nav>
