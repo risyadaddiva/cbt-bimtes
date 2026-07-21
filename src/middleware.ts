@@ -5,8 +5,12 @@ import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Always allow static asset files (svg, png, ico, jpg, webp)
-  if (/\.(svg|png|ico|jpg|jpeg|webp)$/i.test(pathname)) {
+  // Always allow static asset files and SEO files (svg, png, ico, jpg, webp, xml, txt, html)
+  if (
+    /\.(svg|png|ico|jpg|jpeg|webp|xml|txt|html)$/i.test(pathname) ||
+    pathname === "/sitemap.xml" ||
+    pathname === "/robots.txt"
+  ) {
     return NextResponse.next();
   }
 
@@ -68,6 +72,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|xml|txt|html)$).*)",
   ],
 };
