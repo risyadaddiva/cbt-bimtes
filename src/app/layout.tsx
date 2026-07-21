@@ -17,16 +17,53 @@ const playfair = Playfair_Display({
 });
 
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pmiiuinsgd.or.id";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
   title: {
     default: "PMII UIN SGD Cabang Kabupaten Bandung",
     template: "%s | PMII UIN SGD Cabang Kabupaten Bandung",
   },
   description:
     "Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Cabang Kabupaten Bandung",
-  keywords: ["PMII", "BIMTES", "UIN Bandung", "Pergerakan",],
+  keywords: ["PMII", "BIMTES", "UIN Bandung", "Pergerakan", "Kabupaten Bandung", "Aswaja"],
   authors: [{ name: "PMII Komisariat UIN SGD Bandung" }],
-  robots: "noindex,nofollow",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    title: "PK PMII UIN Sunan Gunung Djati Cabang Kabupaten Bandung",
+    description:
+      "Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Cabang Kabupaten Bandung",
+    url: baseUrl,
+    siteName: "PK PMII UIN SGD Bandung",
+    locale: "id_ID",
+    type: "website",
+    images: [
+      {
+        url: "/icon.svg",
+        width: 800,
+        height: 800,
+        alt: "Logo PK PMII UIN SGD Bandung",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PK PMII UIN Sunan Gunung Djati Cabang Kabupaten Bandung",
+    description:
+      "Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Cabang Kabupaten Bandung",
+    images: ["/icon.svg"],
+  },
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },

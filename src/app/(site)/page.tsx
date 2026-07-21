@@ -24,8 +24,37 @@ export default async function HomePage() {
     take: 3,
   });
 
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pmiiuinsgd.or.id";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    name: "PK PMII UIN Sunan Gunung Djati Cabang Kabupaten Bandung",
+    alternateName: [
+      "PMII UIN SGD Bandung",
+      "PMII UIN Sunan Gunung Djati",
+      "PK PMII UIN SGD CAKABA",
+    ],
+    url: baseUrl,
+    logo: `${baseUrl}/icon.svg`,
+    description:
+      "Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Cabang Kabupaten Bandung.",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Jl. A.H. Nasution No. 105, Cipadung, Cibiru",
+      addressLocality: "Kota Bandung",
+      addressRegion: "Jawa Barat",
+      countryName: "Indonesia",
+    },
+    sameAs: ["https://instagram.com/pmii_uinbandung/"],
+  };
+
   return (
     <div className="flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Section 1 - Hero (full-width) */}
       <section className="relative w-full overflow-hidden bg-pmii-gradient text-white py-24 md:py-32">
         {/* Animated background dots placeholder (CSS-based animation could be added in globals, but keeping it simple as requested) */}
