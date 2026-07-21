@@ -1,8 +1,8 @@
-import { auth } from "@/auth";
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default auth(async function middleware(req) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Always allow static asset files and SEO files (svg, png, ico, jpg, webp, xml, txt, html)
@@ -32,30 +32,26 @@ export default auth(async function middleware(req) {
     return NextResponse.next();
   }
 
-  // NextAuth v5 session resolution
-  let user = req.auth?.user;
-  let role = (user as any)?.role;
+  // Detect HTTPS (production) vs HTTP (local) for secure cookie
+  const isHttps =
+    req.nextUrl.protocol === "https:" ||
+    req.headers.get("x-forwarded-proto") === "https";
 
-  // Fallback check with secureCookie support for production HTTPS
-  if (!user) {
-    const isHttps = req.nextUrl.protocol === "https:" || req.headers.get("x-forwarded-proto") === "https";
-    const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+  // Get JWT token — with secure cookie support for HTTPS (production)
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+    secureCookie: isHttps,
+    cookieName: isHttps
+      ? "__Secure-authjs.session-token"
+      : "authjs.session-token",
+  });
 
-    const token = await getToken({
-      req,
-      secret,
-      secureCookie: isHttps,
-    });
-
-    if (token) {
-      user = token as any;
-      role = token.role as string;
-    }
-  }
+  const role = token?.role as string | undefined;
 
   // Login page
   if (pathname === "/login") {
-    if (user) {
+    if (token) {
       if (role === "ADMIN") {
         return NextResponse.redirect(new URL("/admin/dashboard", req.url));
       }
@@ -65,7 +61,7 @@ export default auth(async function middleware(req) {
   }
 
   // Require authentication
-  if (!user) {
+  if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -84,7 +80,7 @@ export default auth(async function middleware(req) {
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
