@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     template: "%s | PMII UIN SGD Cabang Kabupaten Bandung",
   },
   description:
-    "Sistem Computer Based Test (CBT) untuk BIMTES PMII 2026 - Komisariat UIN Sunan Gunung Djati Bandung. Platform tryout online dengan fitur randomisasi soal dan penilaian otomatis.",
-  keywords: ["PMII", "BIMTES", "CBT", "UIN Bandung", "tryout", "ujian online"],
+    "Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Cabang Kabupaten Bandung",
+  keywords: ["PMII", "BIMTES", "UIN Bandung", "Pergerakan",],
   authors: [{ name: "PMII Komisariat UIN SGD Bandung" }],
   robots: "noindex,nofollow",
   icons: {
