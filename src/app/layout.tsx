@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 });
 
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pmiiuinsgd.or.id";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pmiiuinsgd.site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

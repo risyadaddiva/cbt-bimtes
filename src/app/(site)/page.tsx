@@ -24,7 +24,7 @@ export default async function HomePage() {
     take: 3,
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pmiiuinsgd.or.id";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pmiiuinsgd.site";
 
   const jsonLd = {
     "@context": "https://schema.org",
