@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      {
+        source: "/robot.txt",
+        destination: "/robots.txt",
+        permanent: true,
+      },
+    ];
+  },
   output: "standalone",
 };
 
