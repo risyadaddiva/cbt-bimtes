@@ -1,8 +1,8 @@
+import { auth } from "@/auth";
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
+export default auth(async function middleware(req) {
   const { pathname } = req.nextUrl;
 
   // Always allow static asset files and SEO files (svg, png, ico, jpg, webp, xml, txt, html)
@@ -15,7 +15,11 @@ export async function middleware(req: NextRequest) {
   }
 
   // Always allow public API routes
-  if (pathname.startsWith("/api/auth") || pathname.startsWith("/api/health") || pathname.startsWith("/api/site")) {
+  if (
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/api/health") ||
+    pathname.startsWith("/api/site")
+  ) {
     return NextResponse.next();
   }
 
@@ -28,18 +32,30 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // NextAuth v5 session resolution
+  let user = req.auth?.user;
+  let role = (user as any)?.role;
 
-  // Get JWT token (no DB call — pure JWT decode)
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
-  });
+  // Fallback check with secureCookie support for production HTTPS
+  if (!user) {
+    const isHttps = req.nextUrl.protocol === "https:" || req.headers.get("x-forwarded-proto") === "https";
+    const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
 
-  const role = token?.role as string | undefined;
+    const token = await getToken({
+      req,
+      secret,
+      secureCookie: isHttps,
+    });
+
+    if (token) {
+      user = token as any;
+      role = token.role as string;
+    }
+  }
 
   // Login page
   if (pathname === "/login") {
-    if (token) {
+    if (user) {
       if (role === "ADMIN") {
         return NextResponse.redirect(new URL("/admin/dashboard", req.url));
       }
@@ -49,7 +65,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Require authentication
-  if (!token) {
+  if (!user) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -68,7 +84,7 @@ export async function middleware(req: NextRequest) {
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [
