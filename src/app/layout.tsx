@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     apple: "/icon.svg",
   },
   verification: {
-    google: "googlebf0ada345c2b6345",
+    google: "aNiC3PUrVGmHB8-tUmB0_YgBdgkGZXlBdJMWm9qYVJ8",
   },
 };
 
@@ -84,7 +84,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
-        <meta name="google-site-verification" content="googlebf0ada345c2b6345" />
+        <meta name="google-site-verification" content="aNiC3PUrVGmHB8-tUmB0_YgBdgkGZXlBdJMWm9qYVJ8" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="shortcut icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon.svg" />
