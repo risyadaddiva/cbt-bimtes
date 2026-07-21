@@ -5,6 +5,11 @@ import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // Always allow static asset files (svg, png, ico, jpg, webp)
+  if (/\.(svg|png|ico|jpg|jpeg|webp)$/i.test(pathname)) {
+    return NextResponse.next();
+  }
+
   // Always allow public API routes
   if (pathname.startsWith("/api/auth") || pathname.startsWith("/api/health") || pathname.startsWith("/api/site")) {
     return NextResponse.next();
@@ -63,6 +68,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

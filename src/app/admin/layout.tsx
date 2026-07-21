@@ -36,11 +36,17 @@ export default async function AdminLayout({
   const SidebarContent = () => (
     <div className="flex h-full flex-col bg-pmii-gradient text-white">
       <div className="flex h-16 items-center border-b border-white/20 px-6 font-bold text-lg gap-3">
-        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center p-1 shadow-sm shrink-0">
-          <img src="/logo pmii.svg" alt="Logo PMII" className="w-full h-full object-contain" />
-        </div>
-        Admin BIMTES 2026
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center p-1 shadow-sm shrink-0">
+            <img src="/logo pmii.svg" alt="Logo PMII" className="w-full h-full object-contain" />
+          </div>
+          <div className="flex flex-col leading-tight">
+            <span className="font-bold text-white text-sm">PMII UIN SGD</span>
+            <span className="text-[12px] text-blue-100 font-normal">Cabang Kabupaten Bandung</span>
+          </div>
+        </Link>
       </div>
+        
       
       <nav className="flex-1 space-y-1 px-3 py-4">
         {NAV_LINKS.map((link) => (
@@ -99,7 +105,7 @@ export default async function AdminLayout({
         <header className="flex h-16 items-center justify-between border-b bg-background px-4 md:px-8">
           <div className="font-bold text-pmii-blue flex items-center gap-2">
             <img src="/logo pmii.svg" alt="Logo PMII" className="w-6 h-6 object-contain" />
-            <span className="hidden md:inline">CBT BIMTES Admin</span>
+            <span className="hidden md:inline">Admin Panel PK PMII UIN SGD CAKABA</span>
             <span className="md:hidden">Admin Panel</span>
           </div>
           <div className="flex items-center gap-3">

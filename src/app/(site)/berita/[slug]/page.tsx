@@ -67,7 +67,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         <div className="site-container mx-auto px-4 pt-32 pb-16 relative z-10">
           <Link href="/berita" className="inline-flex items-center text-gray-300 hover:text-white mb-8 transition-colors text-sm font-medium">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Kembali ke Berita
+            Kembali ke Artikel
           </Link>
           
           <div className="mb-6">

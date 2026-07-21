@@ -209,3 +209,128 @@
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(15, 82, 186, 0.12);
 }
+
+/* ── Dark Mode Overrides for Site Pages ──────────────────────────────────── */
+/* 
+  Because site pages use hardcoded Tailwind colors (bg-gray-50, bg-white, etc.)
+  without dark: variants, we override them globally here when .dark is active.
+*/
+
+/* Section backgrounds */
+.dark section.bg-gray-50,
+.dark .bg-gray-50 {
+  background-color: oklch(0.18 0.03 250) !important;
+}
+
+.dark section.bg-white,
+.dark .bg-white {
+  background-color: oklch(0.2 0.04 250) !important;
+}
+
+/* Cards */
+.dark .card-hover.bg-white,
+.dark a.bg-white,
+.dark div.bg-white {
+  background-color: oklch(0.22 0.04 250) !important;
+  border-color: oklch(0.3 0.05 250) !important;
+}
+
+/* Text colors */
+.dark .text-gray-900 {
+  color: oklch(0.97 0 0) !important;
+}
+
+.dark .text-gray-600 {
+  color: oklch(0.75 0.03 250) !important;
+}
+
+.dark .text-gray-500 {
+  color: oklch(0.65 0.03 250) !important;
+}
+
+.dark .text-gray-400 {
+  color: oklch(0.55 0.03 250) !important;
+}
+
+.dark .text-gray-300 {
+  color: oklch(0.45 0.02 250) !important;
+}
+
+/* Skeleton / placeholder backgrounds */
+.dark .bg-gray-200 {
+  background-color: oklch(0.28 0.04 250) !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: oklch(0.24 0.04 250) !important;
+}
+
+/* Footer: keep gradient (bg-pmii-gradient), it looks good in dark mode */
+
+/* Navbar subtitle text */
+.dark .text-gray-500 {
+  color: oklch(0.65 0.03 250) !important;
+}
+
+/* About section cards */
+.dark .bg-gray-50.p-4 {
+  background-color: oklch(0.22 0.04 250) !important;
+}
+
+/* Article/berita page */
+.dark .bg-gray-50.min-h-screen {
+  background-color: oklch(0.15 0.03 250) !important;
+}
+
+/* Borders */
+.dark .border {
+  border-color: oklch(0.3 0.05 250);
+}
+
+/* Shadow softening in dark mode */
+.dark .shadow-sm {
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4) !important;
+}
+
+/* Icon circle backgrounds in dark mode */
+.dark .bg-blue-100 {
+  background-color: oklch(0.25 0.07 260) !important;
+}
+.dark .bg-indigo-100 {
+  background-color: oklch(0.25 0.07 270) !important;
+}
+.dark .bg-purple-100 {
+  background-color: oklch(0.25 0.07 290) !important;
+}
+.dark .bg-amber-100 {
+  background-color: oklch(0.27 0.07 85) !important;
+}
+.dark .bg-green-100 {
+  background-color: oklch(0.25 0.07 150) !important;
+}
+.dark .bg-blue-50 {
+  background-color: oklch(0.22 0.05 260) !important;
+}
+
+/* Article detail page */
+.dark article.bg-white {
+  background-color: oklch(0.15 0.03 250) !important;
+}
+
+/* Prose / article content */
+.dark .prose {
+  color: oklch(0.85 0.02 250);
+}
+.dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 {
+  color: oklch(0.97 0 0);
+}
+
+/* Sidebar in article detail */
+.dark .bg-gray-50.rounded-xl {
+  background-color: oklch(0.22 0.04 250) !important;
+}
+
+/* Card hover shadow in dark mode */
+.dark .card-hover:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}

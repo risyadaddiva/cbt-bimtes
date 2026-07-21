@@ -16,7 +16,13 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             </div>
             <p className="italic text-pmii-gold mb-2 font-medium">"Dzikir, Fikir, Amal Sholeh"</p>
             <p className="text-sm text-gray-200 max-w-md leading-relaxed">
-              Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Bandung. 
+              Pergerakan Mahasiswa Islam Indonesia 
+              <br />
+              Komisariat UIN Sunan Gunung Djati Bandung 
+              <br />
+              Cabang Kabupaten Bandung 
+              <br />
+              <br />
               Organisasi ekstra kampus yang berlandaskan Islam Ahlussunnah wal Jama'ah dan Pancasila.
             </p>
           </div>
@@ -25,7 +31,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             <h3 className="font-bold text-lg mb-4 text-pmii-gold border-b border-white/20 pb-2 inline-block">Tautan Cepat</h3>
             <ul className="space-y-2 text-sm text-gray-200">
               <li><Link href="/" className="hover:text-white hover:underline transition-colors">Beranda</Link></li>
-              <li><Link href="/berita" className="hover:text-white hover:underline transition-colors">Berita</Link></li>
+              <li><Link href="/berita" className="hover:text-white hover:underline transition-colors">Artikel</Link></li>
               <li><Link href="/galeri" className="hover:text-white hover:underline transition-colors">Galeri</Link></li>
               <li><Link href="/landasan-hukum" className="hover:text-white hover:underline transition-colors">Landasan Hukum</Link></li>
               <li><Link href="/login" className="hover:text-white hover:underline transition-colors">CBT BIMTES</Link></li>
@@ -36,7 +42,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             <h3 className="font-bold text-lg mb-4 text-pmii-gold border-b border-white/20 pb-2 inline-block">Kontak</h3>
             <ul className="space-y-2 text-sm text-gray-200">
               <li>Email: info@pmiiuinsgd.or.id</li>
-              <li>Instagram: @pmiiuinsgd</li>
+              <li>Instagram: <Link href="instagram.com/pmii_uinbandung/">@pmiiuinsgd</Link></li>
               <li>Sekretariat: Jl. A.H. Nasution No. 105, Cipadung, Cibiru, Kota Bandung</li>
             </ul>
           </div>

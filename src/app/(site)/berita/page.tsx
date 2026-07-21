@@ -8,8 +8,8 @@ import { id } from 'date-fns/locale';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Berita | PK PMII UIN SGD Bandung',
-  description: 'Kumpulan berita dan informasi terbaru seputar kegiatan dan kajian PMII UIN SGD Bandung.',
+  title: 'Artikel | PK PMII UIN SGD Bandung',
+  description: 'Kumpulan artikel dan informasi terbaru seputar kegiatan dan kajian PMII UIN SGD Bandung.',
 };
 
 export default async function BeritaPage() {
@@ -22,10 +22,10 @@ export default async function BeritaPage() {
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="site-container mx-auto px-4">
         <div className="mb-12">
-          <span className="ribbon-label inline-block mb-4">Berita Terkini</span>
+          <span className="ribbon-label inline-block mb-4">Artikel Terkini</span>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 font-[family:var(--font-heading)]">Informasi & Artikel</h1>
           <p className="mt-4 text-gray-600 max-w-2xl text-lg">
-            Ikuti perkembangan terbaru, opini, dan liputan kegiatan dari keluarga besar PMII UIN Sunan Gunung Djati Bandung.
+            Ikuti perkembangan terbaru, opini, dan hasil diskusi kader PMII Komisariat UIN Sunan Gunung Djati Cabang Kabupaten Bandung.
           </p>
         </div>
 
@@ -73,9 +73,9 @@ export default async function BeritaPage() {
             <div className="w-20 h-20 bg-blue-50 text-pmii-blue rounded-full flex items-center justify-center mb-6">
               <Newspaper className="h-10 w-10" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2 font-[family:var(--font-heading)]">Belum ada berita</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2 font-[family:var(--font-heading)]">Belum ada artikel</h3>
             <p className="text-gray-500 max-w-md">
-              Belum ada artikel atau berita yang dipublikasikan saat ini. Silakan kunjungi kembali nanti untuk informasi terbaru.
+              Belum ada artikel yang dipublikasikan saat ini. Silakan kunjungi kembali nanti untuk informasi terbaru.
             </p>
           </div>
         )}

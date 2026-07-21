@@ -28,26 +28,22 @@ export default async function HomePage() {
         <div className="site-container mx-auto px-4 relative z-10 text-center flex flex-col items-center">
           <div className="w-20 h-1 bg-pmii-gold mb-8 rounded-full"></div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 font-[family:var(--font-heading)] drop-shadow-md">
-            PK PMII UIN Sunan Gunung Djati Bandung
+            PK PMII UIN Sunan Gunung Djati
           </h1>
+          <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 font-[family:var(--font-heading)] drop-shadow-md">
+            Cabang Kabupaten Bandung
+          </h3>
           <p className="text-xl md:text-2xl text-pmii-gold font-bold italic mb-6 tracking-wide drop-shadow">
             Dzikir, Fikir, Amal Sholeh
           </p>
           <p className="text-sm md:text-base text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-            Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Bandung. 
-            Bersatu dalam Gerak, Teguh dalam Prinsip.
+            Pergerakan Mahasiswa Islam Indonesia Komisariat UIN Sunan Gunung Djati Cabang Kabupaten Bandung. 
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="#tentang-kami">
               <Button variant="outline" className="w-full sm:w-auto text-pmii-blue border-white bg-white hover:bg-gray-100 hover:text-pmii-blue rounded-full px-8 py-6 text-lg font-bold transition-all shadow-lg hover:shadow-xl">
                 Tentang Kami
               </Button>
-            </Link>
-            <Link href="/login">
-              <Button className="w-full sm:w-auto bg-pmii-gold hover:bg-pmii-gold/90 text-white rounded-full px-8 py-6 text-lg font-bold transition-all shadow-lg hover:shadow-xl border-2 border-pmii-gold">
-                Login Pengurus
-              </Button>
-            </Link>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pmii-blue via-pmii-gold to-pmii-blue"></div>
@@ -66,8 +62,8 @@ export default async function HomePage() {
               <div className="w-16 h-16 rounded-full bg-blue-100 text-pmii-blue flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Newspaper className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Berita Terkini</h3>
-              <p className="text-sm text-gray-500 mb-4 flex-1">Kumpulan berita dan informasi terbaru seputar PMII UIN SGD Bandung.</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Artikel Terkini</h3>
+              <p className="text-sm text-gray-500 mb-4 flex-1">Kumpulan artikel dan informasi terbaru seputar PMII UIN SGD Bandung.</p>
               <span className="text-pmii-blue font-semibold text-sm group-hover:underline flex items-center">Lihat <span className="ml-1">→</span></span>
             </Link>
             
@@ -172,11 +168,11 @@ export default async function HomePage() {
         <div className="site-container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
             <div>
-              <span className="ribbon-label inline-block mb-4">Berita Terkini</span>
+              <span className="ribbon-label inline-block mb-4">Artikel Terkini</span>
               <h2 className="text-3xl font-bold text-gray-900 font-[family:var(--font-heading)]">Info Terbaru PMII</h2>
             </div>
             <Link href="/berita" className="hidden md:inline-flex items-center text-pmii-blue font-semibold hover:underline group">
-              Lihat Semua Berita <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              Lihat Semua Artikel <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
             </Link>
           </div>
 
@@ -235,7 +231,7 @@ export default async function HomePage() {
           <div className="mt-8 text-center md:hidden">
             <Link href="/berita">
               <Button variant="outline" className="w-full border-pmii-blue text-pmii-blue hover:bg-blue-50">
-                Lihat Semua Berita
+                Lihat Semua Artikel
               </Button>
             </Link>
           </div>

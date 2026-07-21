@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 const navLinks = [
   { href: '/', label: 'Beranda' },
-  { href: '/berita', label: 'Berita' },
+  { href: '/berita', label: 'Artikel' },
   { href: '/galeri', label: 'Galeri' },
   { href: '/landasan-hukum', label: 'Landasan Hukum' },
 ];
@@ -24,8 +24,14 @@ export function Navbar() {
       <div className="site-container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <img src="/icon.svg" alt="Logo PMII" className="h-8 w-8 object-contain" />
-          <span className="font-bold text-pmii-blue hidden sm:inline-block">PK PMII UIN SGD Bandung</span>
-          <span className="font-bold text-pmii-blue sm:hidden">PMII UIN SGD</span>
+          <div className="flex flex-col leading-tight hidden sm:flex">
+            <span className="font-bold text-pmii-blue text-sm">PK PMII UIN Sunan Gunung Djati</span>
+            <span className="text-[12px] text-gray-500 font-medium">Cabang Kabupaten Bandung</span>
+          </div>
+          <div className="flex flex-col leading-tight sm:hidden">
+            <span className="font-bold text-pmii-blue text-sm">PMII UIN SGD</span>
+            <span className="text-[10px] text-gray-500 font-medium">Cab. Kab. Bandung</span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
@@ -49,11 +55,11 @@ export function Navbar() {
         <div className="flex items-center gap-2 sm:gap-4">
           <ThemeToggle />
 
-          <Link href="/login" className="hidden md:block">
+          {/* <Link href="/login" className="hidden md:block">
             <Button className="bg-pmii-gold text-white hover:bg-pmii-gold/90 border-0 rounded px-4 py-2 font-medium">
               Login
             </Button>
-          </Link>
+          </Link> */}
 
           {/* Mobile Nav Toggle */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -81,11 +87,11 @@ export function Navbar() {
                     </Link>
                   );
                 })}
-                <Link href="/login" onClick={() => setIsOpen(false)} className="mt-4">
+                {/* <Link href="/login" onClick={() => setIsOpen(false)} className="mt-4">
                   <Button className="w-full bg-pmii-gold text-white hover:bg-pmii-gold/90">
                     Login
                   </Button>
-                </Link>
+                </Link> */}
               </nav>
             </SheetContent>
           </Sheet>
