@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { 
   LayoutDashboard, Users, BookOpen, BarChart2, 
-  Trophy, LogOut, Menu, UserCircle, Newspaper, Images
+  Trophy, LogOut, Menu, UserCircle, Newspaper, Images,
+  GraduationCap, UsersRound, MessageSquare
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,9 @@ const NAV_LINKS = [
   { name: "Analitik", href: "/admin/analytics", icon: BarChart2 },
   { name: "Portal Berita", href: "/admin/berita", icon: Newspaper },
   { name: "Galeri", href: "/admin/galeri", icon: Images },
+  { name: "MAPABA", href: "/admin/mapaba", icon: GraduationCap },
+  { name: "Pengurus", href: "/admin/pengurus", icon: UsersRound },
+  { name: "Advokasi", href: "/admin/advokasi", icon: MessageSquare },
 ];
 
 export default async function AdminLayout({

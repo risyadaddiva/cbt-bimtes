@@ -19,6 +19,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Plus, Image as ImageIcon, Trash2, Calendar, Pencil } from 'lucide-react';
+import { getDriveDisplayUrl } from '@/lib/media';
 
 export default function GaleriPage() {
   const [albums, setAlbums] = useState<any[]>([]);
@@ -90,7 +91,7 @@ export default function GaleriPage() {
             <Card key={album.id} className="overflow-hidden flex flex-col group">
               <div className="relative h-48 bg-gray-100 flex-shrink-0">
                 {album.coverImage ? (
-                  <img src={album.coverImage} alt={album.title} className="w-full h-full object-cover" />
+                  <img src={getDriveDisplayUrl(album.coverImage)} alt={album.title} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-400">
                     <ImageIcon className="h-12 w-12 opacity-50" />

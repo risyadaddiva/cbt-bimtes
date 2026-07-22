@@ -12,10 +12,12 @@ export const metadata: Metadata = {
   description: 'Dokumentasi kegiatan dan momen berharga PMII UIN SGD Bandung.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function GaleriPage() {
   const albums = await prisma.galleryAlbum.findMany({
     where: { isPublished: true },
-    orderBy: { eventDate: 'desc' },
+    orderBy: { createdAt: 'desc' },
     include: { 
       photos: { 
         take: 1, 

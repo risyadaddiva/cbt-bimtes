@@ -265,3 +265,103 @@ model GalleryPhoto {
 
   @@map("gallery_photos")
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Site Settings (feature toggles like MAPABA on/off)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model SiteSetting {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  key   String @unique
+  value String
+
+  @@map("site_settings")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fakultas & Jurusan (admin-managed dropdowns)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Fakultas {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jurusans            Jurusan[]
+  mapabaRegistrations MapabaRegistration[]
+
+  @@map("fakultas")
+}
+
+model Jurusan {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama       String
+  fakultasId String   @db.ObjectId
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  fakultas            Fakultas             @relation(fields: [fakultasId], references: [id], onDelete: Cascade)
+  mapabaRegistrations MapabaRegistration[]
+
+  @@map("jurusans")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MAPABA Registration
+// ─────────────────────────────────────────────────────────────────────────────
+
+model MapabaRegistration {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama         String
+  fakultasId   String   @db.ObjectId
+  jurusanId    String   @db.ObjectId
+  semester     Int
+  jenisKelamin String   // "Laki-laki" | "Perempuan"
+  alamat       String
+  nomorTelepon String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  fakultas Fakultas @relation(fields: [fakultasId], references: [id])
+  jurusan  Jurusan  @relation(fields: [jurusanId], references: [id])
+
+  @@map("mapaba_registrations")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pengurus / Struktur Organisasi
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Pengurus {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama         String
+  jabatan      String
+  fotoUrl      String?  // Google Drive link or URL
+  instagramUrl String?
+  order        Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("pengurus")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Advocacy Complaints (Layanan Advokasi)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model AdvocacyComplaint {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama        String
+  email       String?
+  nomorTelepon String
+  kategori    String   // e.g. "Akademik", "Non-Akademik", "Organisasi", "Lainnya"
+  judul       String
+  deskripsi   String
+  status      String   @default("Baru") // "Baru" | "Diproses" | "Selesai"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("advocacy_complaints")
+}

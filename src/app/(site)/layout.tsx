@@ -31,8 +31,12 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             <h3 className="font-bold text-lg mb-4 text-pmii-gold border-b border-white/20 pb-2 inline-block">Tautan Cepat</h3>
             <ul className="space-y-2 text-sm text-gray-200">
               <li><Link href="/" className="hover:text-white hover:underline transition-colors">Beranda</Link></li>
+              <li><Link href="/profil/sejarah" className="hover:text-white hover:underline transition-colors">Sejarah</Link></li>
+              <li><Link href="/profil/struktur" className="hover:text-white hover:underline transition-colors">Struktur</Link></li>
               <li><Link href="/berita" className="hover:text-white hover:underline transition-colors">Artikel</Link></li>
               <li><Link href="/galeri" className="hover:text-white hover:underline transition-colors">Galeri</Link></li>
+              <li><Link href="/layanan-advokasi" className="hover:text-white hover:underline transition-colors">Layanan Advokasi</Link></li>
+              <li><Link href="/mapaba" className="hover:text-white hover:underline transition-colors">MAPABA</Link></li>
               <li><Link href="/landasan-hukum" className="hover:text-white hover:underline transition-colors">Landasan Hukum</Link></li>
               <li><Link href="/login" className="hover:text-white hover:underline transition-colors">CBT BIMTES</Link></li>
             </ul>

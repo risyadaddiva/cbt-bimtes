@@ -24,7 +24,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // Always allow public site routes (web profil organisasi)
-  const publicPaths = ["/berita", "/galeri", "/landasan-hukum"];
+  const publicPaths = ["/berita", "/galeri", "/landasan-hukum", "/profil", "/layanan-advokasi", "/mapaba"];
   const isPublicPath =
     pathname === "/" ||
     publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/"));

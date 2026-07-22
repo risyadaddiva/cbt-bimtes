@@ -17,6 +17,8 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const latestNews = await prisma.newsArticle.findMany({
     where: { isPublished: true },

@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: 'Kumpulan artikel dan informasi terbaru seputar kegiatan dan kajian PMII UIN SGD Bandung.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function BeritaPage() {
   const news = await prisma.newsArticle.findMany({
     where: { isPublished: true },

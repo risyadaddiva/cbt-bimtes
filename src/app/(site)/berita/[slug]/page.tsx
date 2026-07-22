@@ -31,6 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function ArticleDetailPage({ params }: Props) {
   const { slug } = await params;
   const article = await prisma.newsArticle.findUnique({

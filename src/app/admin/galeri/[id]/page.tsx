@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, Trash2, Plus, Image as ImageIcon } from 'lucide-react';
+import { getDriveDisplayUrl } from '@/lib/media';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -247,7 +248,7 @@ export default function EditAlbumPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {album.photos.map((photo: any) => (
                 <div key={photo.id} className="relative group rounded-lg overflow-hidden border aspect-square bg-gray-100 flex items-center justify-center">
-                  <img src={photo.imageUrl} alt={photo.caption || 'Foto'} className="w-full h-full object-cover" />
+                  <img src={getDriveDisplayUrl(photo.imageUrl)} alt={photo.caption || 'Foto'} className="w-full h-full object-cover" />
                   
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 text-center gap-3">
                     {photo.caption && (
