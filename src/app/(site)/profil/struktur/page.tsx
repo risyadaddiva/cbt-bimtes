@@ -11,10 +11,15 @@ export const metadata: Metadata = {
 };
 
 export default async function StrukturPage() {
-  const pengurus = await prisma.pengurus.findMany({
-    where: { isActive: true },
-    orderBy: { order: 'asc' },
-  });
+  let pengurus: any[] = [];
+  try {
+    pengurus = await prisma.pengurus.findMany({
+      where: { isActive: true },
+      orderBy: { order: 'asc' },
+    });
+  } catch (error) {
+    console.error('Error fetching pengurus:', error);
+  }
 
   return (
     <div className="flex flex-col">
@@ -68,8 +73,8 @@ export default async function StrukturPage() {
                     {/* Photo container */}
                     <div className="relative aspect-[3/4] overflow-hidden bg-gray-200">
                       <img
-                        src={fotoSrc}
-                        alt={p.nama}
+                        src={fotoSrc || PLACEHOLDER_IMAGE}
+                        alt={p.nama || ''}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
 
@@ -81,7 +86,7 @@ export default async function StrukturPage() {
                         <p className="text-pmii-gold font-medium text-sm mb-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
                           {p.jabatan}
                         </p>
-                        {p.instagramUrl && (
+                        {Boolean(p.instagramUrl) && (
                           <a
                             href={p.instagramUrl.startsWith('http') ? p.instagramUrl : `https://instagram.com/${p.instagramUrl.replace('@', '')}`}
                             target="_blank"
