@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/auth';
+import { revalidatePath } from 'next/cache';
 
 // GET — admin: list all pengurus
 export async function GET() {
@@ -45,6 +46,9 @@ export async function POST(req: NextRequest) {
         isActive: isActive ?? true,
       },
     });
+
+    revalidatePath('/profil/struktur');
+    revalidatePath('/api/site/pengurus');
 
     return NextResponse.json(pengurus, { status: 201 });
   } catch (error: any) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/auth';
+import { revalidatePath } from 'next/cache';
 
 // PUT — admin: update pengurus by ID
 export async function PUT(
@@ -29,6 +30,9 @@ export async function PUT(
       },
     });
 
+    revalidatePath('/profil/struktur');
+    revalidatePath('/api/site/pengurus');
+
     return NextResponse.json(pengurus);
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
@@ -48,6 +52,10 @@ export async function DELETE(
 
     const { id } = await params;
     await prisma.pengurus.delete({ where: { id } });
+
+    revalidatePath('/profil/struktur');
+    revalidatePath('/api/site/pengurus');
+
     return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });

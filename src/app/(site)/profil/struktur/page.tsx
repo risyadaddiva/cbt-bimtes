@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { getDriveDisplayUrl, PLACEHOLDER_IMAGE } from '@/lib/media';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Struktur Organisasi — PK PMII UIN Sunan Gunung Djati',
   description: 'Struktur kepengurusan PK PMII UIN Sunan Gunung Djati Bandung Cabang Kabupaten Bandung.',
