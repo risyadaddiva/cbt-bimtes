@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -12,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Trash2 } from 'lucide-react';
+import { ArrowLeft, Trash2, Bold, Italic, Pilcrow, Eye, Edit3 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -40,6 +38,18 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+function formatPreviewContent(content: string): string {
+  if (!content) return '<p className="text-gray-400 italic">Belum ada konten...</p>';
+  const hasHtmlBlocks = /<(p|div|h[1-6]|ul|ol|li|blockquote|br)\b[^>]*>/i.test(content);
+  if (hasHtmlBlocks) {
+    return content;
+  }
+  return content
+    .split(/\n{2,}/)
+    .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br/>')}</p>`)
+    .join('');
+}
+
 export default function EditBeritaPage() {
   const router = useRouter();
   const params = useParams();
@@ -48,6 +58,7 @@ export default function EditBeritaPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isExtractingPdf, setIsExtractingPdf] = useState(false);
+  const [activeTab, setActiveTab] = useState<'write' | 'preview'>('write');
 
   const { register, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -55,6 +66,33 @@ export default function EditBeritaPage() {
       isPublished: false,
     }
   });
+
+  const contentValue = watch('content') || '';
+
+  const insertFormatting = (tagStart: string, tagEnd: string) => {
+    const textarea = document.getElementById('content') as HTMLTextAreaElement | null;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentText = textarea.value || '';
+    const selectedText = currentText.substring(start, end);
+
+    const replacement = selectedText
+      ? `${tagStart}${selectedText}${tagEnd}`
+      : `${tagStart}Teks${tagEnd}`;
+
+    const newText = currentText.substring(0, start) + replacement + currentText.substring(end);
+
+    setValue('content', newText, { shouldValidate: true, shouldDirty: true });
+
+    setTimeout(() => {
+      textarea.focus();
+      const cursorStart = start + tagStart.length;
+      const cursorEnd = cursorStart + (selectedText ? selectedText.length : 4);
+      textarea.setSelectionRange(cursorStart, cursorEnd);
+    }, 50);
+  };
 
   const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -242,10 +280,73 @@ export default function EditBeritaPage() {
               {errors.excerpt && <p className="text-sm text-red-500">{errors.excerpt.message}</p>}
             </div>
 
-             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="content">Konten Artikel <span className="text-red-500">*</span></Label>
+            {/* Konten Artikel dengan Toolbar Format & Live Preview */}
+            <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b">
                 <div className="flex items-center gap-2">
+                  <Label htmlFor="content" className="font-semibold text-gray-800">
+                    Konten Artikel <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="flex items-center gap-1 bg-gray-100 p-0.5 rounded-lg text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('write')}
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors ${
+                        activeTab === 'write' ? 'bg-white shadow text-pmii-blue font-semibold' : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      <Edit3 className="h-3.5 w-3.5" />
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('preview')}
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-colors ${
+                        activeTab === 'preview' ? 'bg-white shadow text-pmii-blue font-semibold' : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                      Pratinjau Tampilan
+                    </button>
+                  </div>
+                </div>
+
+                {/* Toolbar Format Teks */}
+                <div className="flex items-center gap-1 flex-wrap">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => insertFormatting('<b>', '</b>')}
+                    title="Tebal (Bold)"
+                    className="h-8 px-2 text-xs font-bold gap-1 border-gray-200 hover:bg-gray-100"
+                  >
+                    <Bold className="h-3.5 w-3.5 text-gray-700" />
+                    Bold
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => insertFormatting('<i>', '</i>')}
+                    title="Miring (Italic)"
+                    className="h-8 px-2 text-xs italic gap-1 border-gray-200 hover:bg-gray-100"
+                  >
+                    <Italic className="h-3.5 w-3.5 text-gray-700" />
+                    Italic
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => insertFormatting('<p>', '</p>')}
+                    title="Paragraf Baru"
+                    className="h-8 px-2 text-xs gap-1 border-gray-200 hover:bg-gray-100"
+                  >
+                    <Pilcrow className="h-3.5 w-3.5 text-gray-700" />
+                    Paragraf
+                  </Button>
+
                   <Input 
                     type="file" 
                     accept=".pdf" 
@@ -256,13 +357,34 @@ export default function EditBeritaPage() {
                   />
                   <Label 
                     htmlFor="pdf-upload" 
-                    className="inline-flex items-center gap-1 text-xs bg-pmii-blue text-white px-2.5 py-1.5 rounded cursor-pointer hover:bg-blue-800 disabled:opacity-50 font-medium"
+                    className="inline-flex items-center gap-1 text-xs bg-pmii-blue text-white px-2.5 py-1.5 rounded cursor-pointer hover:bg-blue-800 disabled:opacity-50 font-medium ml-1"
                   >
                     {isExtractingPdf ? 'Mengekstrak...' : 'Impor dari PDF'}
                   </Label>
                 </div>
               </div>
-              <Textarea id="content" {...register('content')} rows={10} />
+
+              {activeTab === 'write' ? (
+                <Textarea 
+                  id="content" 
+                  {...register('content')} 
+                  rows={12}
+                  className="font-mono text-sm leading-relaxed"
+                />
+              ) : (
+                <div className="min-h-[280px] p-4 bg-gray-50 border rounded-lg overflow-y-auto">
+                  <div className="text-xs font-semibold uppercase text-gray-400 mb-3 tracking-wider border-b pb-1">
+                    Pratinjau Tampilan Publik
+                  </div>
+                  <div 
+                    className="prose prose-blue max-w-none text-gray-800
+                               [&_p]:mb-4 [&_p]:leading-relaxed [&_p]:text-gray-800
+                               [&_b]:font-bold [&_b]:text-gray-900 [&_strong]:font-bold [&_strong]:text-gray-900
+                               [&_i]:italic [&_em]:italic"
+                    dangerouslySetInnerHTML={{ __html: formatPreviewContent(contentValue) }}
+                  />
+                </div>
+              )}
               {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
             </div>
 

@@ -33,6 +33,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export const dynamic = 'force-dynamic';
 
+function formatArticleContent(content: string): string {
+  if (!content) return '';
+  const hasHtmlBlocks = /<(p|div|h[1-6]|ul|ol|li|blockquote|br)\b[^>]*>/i.test(content);
+  if (hasHtmlBlocks) {
+    return content;
+  }
+  return content
+    .split(/\n{2,}/)
+    .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br/>')}</p>`)
+    .join('');
+}
+
 export default async function ArticleDetailPage({ params }: Props) {
   const { slug } = await params;
   const article = await prisma.newsArticle.findUnique({
@@ -109,10 +121,13 @@ export default async function ArticleDetailPage({ params }: Props) {
           <div className="lg:col-span-8">
             <div 
               className="prose prose-lg prose-blue max-w-none text-gray-800
-                         prose-headings:font-[family:var(--font-heading)] prose-headings:font-bold prose-headings:text-gray-900
+                         [&_p]:mb-6 [&_p]:leading-relaxed [&_p]:text-gray-800 [&_p:last-child]:mb-0
+                         [&_b]:font-bold [&_b]:text-gray-900 [&_strong]:font-bold [&_strong]:text-gray-900
+                         [&_i]:italic [&_em]:italic
+                         prose-headings:font-[family:var(--font-heading)] prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mt-8 prose-headings:mb-4
                          prose-a:text-pmii-blue hover:prose-a:text-pmii-blue/80
-                         prose-img:rounded-xl prose-img:shadow-md"
-              dangerouslySetInnerHTML={{ __html: article.content }}
+                         prose-img:rounded-xl prose-img:shadow-md prose-img:my-6"
+              dangerouslySetInnerHTML={{ __html: formatArticleContent(article.content) }}
             />
             
             {article.tags && article.tags.length > 0 && (
