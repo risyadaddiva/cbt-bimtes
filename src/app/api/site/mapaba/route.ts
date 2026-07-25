@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
         motivasi: motivasi || null,
         alamat,
         nomorTelepon,
-      },
+      } as any,
     });
 
     return NextResponse.json({ success: true, registration }, { status: 201 });
