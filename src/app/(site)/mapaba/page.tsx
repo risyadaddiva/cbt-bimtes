@@ -41,7 +41,10 @@ export default async function MapabaPage() {
             Pendaftaran MAPABA
           </h1>
           <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto font-medium">
-            Masa Penerimaan Anggota Baru — PK PMII UIN Sunan Gunung Djati Bandung
+            Masa Penerimaan Anggota Baru
+          </p>
+          <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto font-medium">
+            PK PMII UIN Sunan Gunung Djati Cabang Kabupaten Bandung
           </p>
         </div>
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pmii-blue via-pmii-gold to-pmii-blue" />

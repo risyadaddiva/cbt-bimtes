@@ -30,6 +30,10 @@ interface Registration {
   nama: string;
   semester: number;
   jenisKelamin: string;
+  asalSekolah?: string;
+  isPesantren?: boolean;
+  namaPesantren?: string;
+  motivasi?: string;
   alamat: string;
   nomorTelepon: string;
   createdAt: string;
@@ -400,10 +404,11 @@ export default function AdminMapabaPage() {
                   <TableRow>
                     <TableHead className="w-12">#</TableHead>
                     <TableHead>Nama</TableHead>
-                    <TableHead>Fakultas</TableHead>
-                    <TableHead>Jurusan</TableHead>
+                    <TableHead>Fakultas / Jurusan</TableHead>
                     <TableHead>Sem</TableHead>
                     <TableHead>JK</TableHead>
+                    <TableHead>Asal Sekolah / Pesantren</TableHead>
+                    <TableHead>Motivasi</TableHead>
                     <TableHead>Telepon</TableHead>
                     <TableHead>Tanggal</TableHead>
                     <TableHead className="w-12"></TableHead>
@@ -414,13 +419,26 @@ export default function AdminMapabaPage() {
                     <TableRow key={reg.id}>
                       <TableCell className="text-muted-foreground">{i + 1}</TableCell>
                       <TableCell className="font-medium">{reg.nama}</TableCell>
-                      <TableCell className="text-sm">{reg.fakultas.nama}</TableCell>
-                      <TableCell className="text-sm">{reg.jurusan.nama}</TableCell>
+                      <TableCell className="text-sm">
+                        <div>{reg.fakultas.nama}</div>
+                        <div className="text-xs text-muted-foreground">{reg.jurusan.nama}</div>
+                      </TableCell>
                       <TableCell>{reg.semester}</TableCell>
                       <TableCell>
                         <Badge variant="secondary" className="text-xs">
                           {reg.jenisKelamin === 'Laki-laki' ? 'L' : 'P'}
                         </Badge>
+                      </TableCell>
+                      <TableCell className="text-sm max-w-[200px]">
+                        <div>{reg.asalSekolah || '-'}</div>
+                        {reg.isPesantren && (
+                          <Badge variant="outline" className="text-xs mt-1 border-purple-200 bg-purple-50 text-purple-700">
+                            Santri: {reg.namaPesantren || 'Pesantren'}
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-sm max-w-[200px] truncate" title={reg.motivasi || undefined}>
+                        {reg.motivasi || '-'}
                       </TableCell>
                       <TableCell className="text-sm">{reg.nomorTelepon}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">

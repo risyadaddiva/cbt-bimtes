@@ -38,11 +38,23 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { nama, fakultasId, jurusanId, semester, jenisKelamin, alamat, nomorTelepon } = body;
+    const {
+      nama,
+      fakultasId,
+      jurusanId,
+      semester,
+      jenisKelamin,
+      asalSekolah,
+      isPesantren,
+      namaPesantren,
+      motivasi,
+      alamat,
+      nomorTelepon,
+    } = body;
 
     // Basic validation
     if (!nama || !fakultasId || !jurusanId || !semester || !jenisKelamin || !alamat || !nomorTelepon) {
-      return NextResponse.json({ error: 'Semua field wajib diisi' }, { status: 400 });
+      return NextResponse.json({ error: 'Semua field utama wajib diisi' }, { status: 400 });
     }
 
     if (!['Laki-laki', 'Perempuan'].includes(jenisKelamin)) {
@@ -72,6 +84,10 @@ export async function POST(req: NextRequest) {
         jurusanId,
         semester: semesterNum,
         jenisKelamin,
+        asalSekolah: asalSekolah || null,
+        isPesantren: Boolean(isPesantren),
+        namaPesantren: isPesantren ? (namaPesantren || null) : null,
+        motivasi: motivasi || null,
         alamat,
         nomorTelepon,
       },

@@ -21,7 +21,7 @@ const navLinks = [
   { href: '/galeri', label: 'Galeri' },
   { href: '/landasan-hukum', label: 'Landasan Hukum' },
   { href: '/layanan-advokasi', label: 'Layanan Advokasi' },
-  { href: '/mapaba', label: 'MAPABA' },
+  { href: '/mapaba', label: 'MAPABA Raya' },
 ];
 
 export function Navbar() {
@@ -48,7 +48,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md shadow-sm transition-all duration-300">
       <div className="site-container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/icon.svg" alt="Logo PMII" className="h-8 w-8 object-contain" />
+          <img src="/logo.png" alt="Logo Komisariat UIN Bandung" className="h-8 w-8 object-contain" />
           <div className="flex flex-col leading-tight hidden sm:flex">
             <span className="font-bold text-pmii-blue text-sm">PK PMII UIN Sunan Gunung Djati</span>
             <span className="text-[12px] text-gray-500 font-medium">Cabang Kabupaten Bandung</span>

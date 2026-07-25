@@ -312,16 +312,20 @@ model Jurusan {
 // ─────────────────────────────────────────────────────────────────────────────
 
 model MapabaRegistration {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  nama         String
-  fakultasId   String   @db.ObjectId
-  jurusanId    String   @db.ObjectId
-  semester     Int
-  jenisKelamin String   // "Laki-laki" | "Perempuan"
-  alamat       String
-  nomorTelepon String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  nama          String
+  fakultasId    String   @db.ObjectId
+  jurusanId     String   @db.ObjectId
+  semester      Int
+  jenisKelamin  String   // "Laki-laki" | "Perempuan"
+  asalSekolah   String?
+  isPesantren   Boolean? @default(false)
+  namaPesantren String?
+  motivasi      String?
+  alamat        String
+  nomorTelepon  String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   fakultas Fakultas @relation(fields: [fakultasId], references: [id])
   jurusan  Jurusan  @relation(fields: [jurusanId], references: [id])
