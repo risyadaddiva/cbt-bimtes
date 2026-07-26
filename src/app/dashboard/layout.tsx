@@ -35,7 +35,7 @@ export default async function DashboardLayout({
             <form
               action={async () => {
                 "use server";
-                await signOut({ redirectTo: "https://pmiiuinsgd.site" });
+                await signOut({ redirectTo: "/login" });
               }}
             >
               <Button variant="ghost" size="sm" type="submit" className="text-muted-foreground hover:text-foreground">

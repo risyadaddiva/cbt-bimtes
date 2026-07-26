@@ -121,37 +121,37 @@ export default function SejarahPage() {
         <div className="site-container mx-auto px-4 text-center">
           <span className="ribbon-label inline-block mb-4 mx-auto">Identitas</span>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 font-[family:var(--font-heading)]">
-            Nilai-Nilai PMII
+            TRILOGI PMII
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="bg-gray-50 p-8 rounded-2xl border card-hover">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🤲</span>
+                <span className="text-3xl">💡</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Dzikir</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">TRI MOTTO</h3>
               <p className="text-gray-600 text-sm">
-                Kesadaran spiritual dalam setiap langkah pergerakan. Mengingat Allah SWT sebagai landasan utama.
+                Dzikir, Fikir, Amal Sholeh
               </p>
             </div>
 
             <div className="bg-gray-50 p-8 rounded-2xl border card-hover">
               <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">💡</span>
+                <span className="text-3xl">✊</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Fikir</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">TRI KHIDMAT</h3>
               <p className="text-gray-600 text-sm">
-                Intelektualitas dan berpikir kritis sebagai modal utama pergerakan mahasiswa Islam.
+                Taqwa, Intelektual, Profesional
               </p>
             </div>
 
             <div className="bg-gray-50 p-8 rounded-2xl border card-hover">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">✊</span>
+                <span className="text-3xl">⚖️</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Amal Sholeh</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">TRI KOMITMEN</h3>
               <p className="text-gray-600 text-sm">
-                Aksi nyata untuk kemaslahatan umat dan bangsa. Teori tanpa praktek adalah kesia-siaan.
+                Kejujuran, Kebenaran, Keadilan
               </p>
             </div>
           </div>

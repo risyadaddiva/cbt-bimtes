@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Landasan Hukum | PK PMII UIN SGD Bandung',
+  title: 'Landasan Hukum | PK PMII UIN Bandung',
   description: 'Dokumen landasan konstitusional, AD/ART, PO, dan Nilai Dasar Pergerakan PMII.',
 };
 

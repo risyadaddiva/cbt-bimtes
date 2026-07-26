@@ -12,7 +12,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
               <Shield className="h-8 w-8 text-white" />
-              <span className="font-bold text-xl">PK PMII UIN SGD Bandung</span>
+              <span className="font-bold text-xl">PK PMII UIN Bandung</span>
             </div>
             <p className="italic text-pmii-gold mb-2 font-medium">"Dzikir, Fikir, Amal Sholeh"</p>
             <p className="text-sm text-gray-200 max-w-md leading-relaxed">
@@ -45,15 +45,15 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <div>
             <h3 className="font-bold text-lg mb-4 text-pmii-gold border-b border-white/20 pb-2 inline-block">Kontak</h3>
             <ul className="space-y-2 text-sm text-gray-200">
-              <li>Email: info@pmiiuinsgd.or.id</li>
-              <li>Instagram: <Link href="instagram.com/pmii_uinbandung/">@pmiiuinsgd</Link></li>
-              <li>Sekretariat: Jl. A.H. Nasution No. 105, Cipadung, Cibiru, Kota Bandung</li>
+              <li>Email: pmiiuinbandun9@gmail.com</li>
+              <li>Instagram: <Link href="instagram.com/pmii_uinbandung/">@pmii_uinbandung</Link></li>
+              <li>Sekretariat: Jl. Manisi No.25, Pasir Biru, Kec. Cibiru, Kota Bandung</li>
             </ul>
           </div>
         </div>
         
         <div className="border-t border-white/20 mt-8 pt-6 text-center text-xs text-gray-300 px-4">
-          <p>&copy; 2026 PK PMII UIN Sunan Gunung Djati Bandung. All rights reserved.</p>
+          <p>&copy; 2026 PK PMII UIN Bandung. All rights reserved.</p>
         </div>
       </footer>
     </div>

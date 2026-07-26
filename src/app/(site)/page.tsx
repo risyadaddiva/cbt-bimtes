@@ -247,7 +247,7 @@ export default async function HomePage() {
                   <Shield className="h-20 w-20 text-pmii-gold mb-6 opacity-80" />
                   <p className="text-2xl md:text-3xl font-[family:var(--font-heading)] font-bold italic leading-snug">
                     "Tumbuh Subur Kader PMII, <br />
-                    Maju Terus PMII"
+                    Masa depan di tanganmu"
                   </p>
                   <div className="mt-8 w-16 h-1 bg-pmii-gold mx-auto"></div>
                   <p className="mt-4 font-semibold tracking-wider uppercase text-sm text-gray-300">
@@ -368,11 +368,11 @@ export default async function HomePage() {
       <section className="bg-pmii-blue py-16 md:py-24">
         <div className="site-container mx-auto px-4 text-center">
           <p className="text-2xl md:text-4xl lg:text-5xl font-[family:var(--font-heading)] font-bold italic text-white leading-tight max-w-4xl mx-auto drop-shadow-sm">
-            "Terlahir dari Rahim Kampus, <br className="hidden md:block" />{" "}
-            Tumbuh Bersama Umat"
+            "Teguh Pada Prinsip, <br className="hidden md:block" />{" "}
+            Setia Pada Proses"
           </p>
           <div className="mt-8 text-pmii-gold text-lg md:text-xl font-semibold tracking-wider">
-            — PMII
+            — Mahbub Djunaidi
           </div>
         </div>
       </section>

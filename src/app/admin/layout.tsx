@@ -78,7 +78,7 @@ export default async function AdminLayout({
         <form
           action={async () => {
             "use server";
-            await signOut({ redirectTo: "https://pmiiuinsgd.site" });
+            await signOut({ redirectTo: "/login" });
           }}
           className="mt-2"
         >
