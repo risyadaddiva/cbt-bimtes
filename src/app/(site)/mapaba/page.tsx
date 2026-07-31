@@ -79,7 +79,7 @@ export default async function MapabaPage() {
                 Pendaftaran Belum Dibuka
               </h2>
               <p className="text-gray-600 mb-6">
-                Mohon maaf, pendaftaran MAPABA PK PMII UIN Sunan Gunung Djati Bandung saat ini belum dibuka. 
+                Mohon maaf, pendaftaran MAPABA RAYA PK PMII UIN Sunan Gunung Djati Cabang Kabupaten Bandung saat ini belum dibuka. 
                 Silakan pantau informasi terbaru melalui media sosial kami.
               </p>
               <div className="inline-flex items-center gap-2 text-sm text-gray-500 bg-gray-100 px-4 py-2 rounded-full">
