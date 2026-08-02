@@ -47,7 +47,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
             <ul className="space-y-2 text-sm text-gray-200">
               <li>Email: pmiiuinbandun9@gmail.com</li>
               <li>Instagram: <Link href="instagram.com/pmii_uinbandung/">@pmii_uinbandung</Link></li>
-              <li>Sekretariat: Jl. Manisi No.25, Pasir Biru, Kec. Cibiru, Kota Bandung</li>
+              <li>Sekretariat: Jl. Manisi No. 21B Gang Kramat III RT 01 RW 09, Cibiru, Bandung, Jawa Barat</li>
             </ul>
           </div>
         </div>

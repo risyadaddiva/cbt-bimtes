@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { CheckCircle, Loader2 } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { CheckCircle, Loader2 } from "lucide-react";
 
 interface Jurusan {
   id: string;
@@ -19,30 +19,36 @@ interface Fakultas {
   jurusans: Jurusan[];
 }
 
-export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] }) {
+export default function MapabaForm({
+  fakultasList,
+}: {
+  fakultasList: Fakultas[];
+}) {
   const [formData, setFormData] = useState({
-    nama: '',
-    fakultasId: '',
-    jurusanId: '',
-    semester: '',
-    jenisKelamin: '',
-    asalSekolah: '',
+    nama: "",
+    fakultasId: "",
+    jurusanId: "",
+    semester: "",
+    jenisKelamin: "",
+    asalSekolah: "",
     isPesantren: false,
-    namaPesantren: '',
-    motivasi: '',
-    alamat: '',
-    nomorTelepon: '',
+    namaPesantren: "",
+    motivasi: "",
+    alamat: "",
+    nomorTelepon: "",
   });
   const [filteredJurusans, setFilteredJurusans] = useState<Jurusan[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (formData.fakultasId) {
-      const selectedFakultas = fakultasList.find(f => f.id === formData.fakultasId);
+      const selectedFakultas = fakultasList.find(
+        (f) => f.id === formData.fakultasId,
+      );
       setFilteredJurusans(selectedFakultas?.jurusans || []);
-      setFormData(prev => ({ ...prev, jurusanId: '' }));
+      setFormData((prev) => ({ ...prev, jurusanId: "" }));
     } else {
       setFilteredJurusans([]);
     }
@@ -50,26 +56,26 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsSubmitting(true);
 
     try {
-      const res = await fetch('/api/site/mapaba', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/site/mapaba", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Terjadi kesalahan');
+        setError(data.error || "Terjadi kesalahan");
         return;
       }
 
       setSuccess(true);
     } catch {
-      setError('Terjadi kesalahan jaringan. Silakan coba lagi.');
+      setError("Terjadi kesalahan jaringan. Silakan coba lagi.");
     } finally {
       setIsSubmitting(false);
     }
@@ -81,26 +87,28 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <CheckCircle className="w-10 h-10 text-green-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">Pendaftaran Berhasil!</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-3">
+          Pendaftaran Berhasil!
+        </h2>
         <p className="text-gray-600 max-w-md mx-auto mb-8">
-          Terima kasih telah mendaftar MAPABA PK PMII UIN Sunan Gunung Djati Bandung. 
-          Data Anda telah kami terima dan akan segera diproses.
+          Terima kasih telah mendaftar MAPABA PK PMII UIN Sunan Gunung Djati
+          Bandung. Data Anda telah kami terima dan akan segera diproses.
         </p>
         <Button
           onClick={() => {
             setSuccess(false);
             setFormData({
-              nama: '',
-              fakultasId: '',
-              jurusanId: '',
-              semester: '',
-              jenisKelamin: '',
-              asalSekolah: '',
+              nama: "",
+              fakultasId: "",
+              jurusanId: "",
+              semester: "",
+              jenisKelamin: "",
+              asalSekolah: "",
               isPesantren: false,
-              namaPesantren: '',
-              motivasi: '',
-              alamat: '',
-              nomorTelepon: '',
+              namaPesantren: "",
+              motivasi: "",
+              alamat: "",
+              nomorTelepon: "",
             });
           }}
           variant="outline"
@@ -128,8 +136,10 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
         <Input
           id="nama"
           value={formData.nama}
-          onChange={(e) => setFormData(prev => ({ ...prev, nama: e.target.value }))}
-          placeholder="Masukkan nama lengkap"
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, nama: e.target.value }))
+          }
+          placeholder="Masukin nama lengkap"
           required
           className="h-11"
         />
@@ -138,38 +148,56 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
       {/* Fakultas & Jurusan */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="fakultas" className="text-sm font-semibold text-gray-700">
+          <Label
+            htmlFor="fakultas"
+            className="text-sm font-semibold text-gray-700"
+          >
             Fakultas <span className="text-red-500">*</span>
           </Label>
           <select
             id="fakultas"
             value={formData.fakultasId}
-            onChange={(e) => setFormData(prev => ({ ...prev, fakultasId: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, fakultasId: e.target.value }))
+            }
             required
             className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <option value="">Pilih Fakultas</option>
-            {fakultasList.map(f => (
-              <option key={f.id} value={f.id}>{f.nama}</option>
+            {fakultasList.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.nama}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="jurusan" className="text-sm font-semibold text-gray-700">
+          <Label
+            htmlFor="jurusan"
+            className="text-sm font-semibold text-gray-700"
+          >
             Jurusan <span className="text-red-500">*</span>
           </Label>
           <select
             id="jurusan"
             value={formData.jurusanId}
-            onChange={(e) => setFormData(prev => ({ ...prev, jurusanId: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, jurusanId: e.target.value }))
+            }
             required
             disabled={!formData.fakultasId}
             className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value="">{formData.fakultasId ? 'Pilih Jurusan' : 'Pilih fakultas terlebih dahulu'}</option>
-            {filteredJurusans.map(j => (
-              <option key={j.id} value={j.id}>{j.nama}</option>
+            <option value="">
+              {formData.fakultasId
+                ? "Pilih Jurusan"
+                : "Pilih fakultas terlebih dahulu"}
+            </option>
+            {filteredJurusans.map((j) => (
+              <option key={j.id} value={j.id}>
+                {j.nama}
+              </option>
             ))}
           </select>
         </div>
@@ -178,19 +206,26 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
       {/* Semester & Jenis Kelamin */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="semester" className="text-sm font-semibold text-gray-700">
+          <Label
+            htmlFor="semester"
+            className="text-sm font-semibold text-gray-700"
+          >
             Semester <span className="text-red-500">*</span>
           </Label>
           <select
             id="semester"
             value={formData.semester}
-            onChange={(e) => setFormData(prev => ({ ...prev, semester: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, semester: e.target.value }))
+            }
             required
             className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <option value="">Pilih Semester</option>
-            {Array.from({ length: 14 }, (_, i) => i + 1).map(s => (
-              <option key={s} value={s}>Semester {s}</option>
+            {Array.from({ length: 5 }, (_, i) => i + 1).map((s) => (
+              <option key={s} value={s}>
+                Semester {s}
+              </option>
             ))}
           </select>
         </div>
@@ -205,8 +240,13 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
                 type="radio"
                 name="jenisKelamin"
                 value="Laki-laki"
-                checked={formData.jenisKelamin === 'Laki-laki'}
-                onChange={(e) => setFormData(prev => ({ ...prev, jenisKelamin: e.target.value }))}
+                checked={formData.jenisKelamin === "Laki-laki"}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    jenisKelamin: e.target.value,
+                  }))
+                }
                 required
                 className="w-4 h-4 accent-pmii-blue"
               />
@@ -217,8 +257,13 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
                 type="radio"
                 name="jenisKelamin"
                 value="Perempuan"
-                checked={formData.jenisKelamin === 'Perempuan'}
-                onChange={(e) => setFormData(prev => ({ ...prev, jenisKelamin: e.target.value }))}
+                checked={formData.jenisKelamin === "Perempuan"}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    jenisKelamin: e.target.value,
+                  }))
+                }
                 className="w-4 h-4 accent-pmii-blue"
               />
               <span className="text-sm text-gray-700">Perempuan</span>
@@ -230,13 +275,18 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
       {/* Asal Sekolah & Pesantren */}
       <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-200/80">
         <div className="space-y-2">
-          <Label htmlFor="asalSekolah" className="text-sm font-semibold text-gray-700">
+          <Label
+            htmlFor="asalSekolah"
+            className="text-sm font-semibold text-gray-700"
+          >
             Asal Sekolah (SMA / MA / SMK)
           </Label>
           <Input
             id="asalSekolah"
             value={formData.asalSekolah}
-            onChange={(e) => setFormData(prev => ({ ...prev, asalSekolah: e.target.value }))}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, asalSekolah: e.target.value }))
+            }
             placeholder="Contoh: SMAN 1 Bandung / MAN 2 Kota Bandung"
             className="h-11 bg-white"
           />
@@ -248,11 +298,13 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
               type="checkbox"
               id="isPesantren"
               checked={formData.isPesantren}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                isPesantren: e.target.checked,
-                namaPesantren: e.target.checked ? prev.namaPesantren : '',
-              }))}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  isPesantren: e.target.checked,
+                  namaPesantren: e.target.checked ? prev.namaPesantren : "",
+                }))
+              }
               className="w-4 h-4 rounded text-pmii-blue focus:ring-pmii-blue border-gray-300 accent-pmii-blue"
             />
             <span className="text-sm font-medium text-gray-800">
@@ -262,14 +314,22 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
 
           {formData.isPesantren && (
             <div className="space-y-2 pt-1 transition-all">
-              <Label htmlFor="namaPesantren" className="text-sm font-semibold text-gray-700">
+              <Label
+                htmlFor="namaPesantren"
+                className="text-sm font-semibold text-gray-700"
+              >
                 Nama Pondok Pesantren <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="namaPesantren"
                 value={formData.namaPesantren}
-                onChange={(e) => setFormData(prev => ({ ...prev, namaPesantren: e.target.value }))}
-                placeholder="Masukkan nama pondok pesantren"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    namaPesantren: e.target.value,
+                  }))
+                }
+                placeholder="Masukin nama pondok pesantren"
                 required={formData.isPesantren}
                 className="h-11 bg-white"
               />
@@ -280,14 +340,19 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
 
       {/* Motivasi */}
       <div className="space-y-2">
-        <Label htmlFor="motivasi" className="text-sm font-semibold text-gray-700">
+        <Label
+          htmlFor="motivasi"
+          className="text-sm font-semibold text-gray-700"
+        >
           Motivasi Mengikuti MAPABA
         </Label>
         <Textarea
           id="motivasi"
           value={formData.motivasi}
-          onChange={(e) => setFormData(prev => ({ ...prev, motivasi: e.target.value }))}
-          placeholder="Ceritakan motivasi Anda memilih dan mengikuti MAPABA PMII..."
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, motivasi: e.target.value }))
+          }
+          placeholder="Ceritain motivasi kamu memilih dan mengikuti MAPABA PMII..."
           rows={3}
         />
       </div>
@@ -300,8 +365,10 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
         <Textarea
           id="alamat"
           value={formData.alamat}
-          onChange={(e) => setFormData(prev => ({ ...prev, alamat: e.target.value }))}
-          placeholder="Masukkan alamat lengkap"
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, alamat: e.target.value }))
+          }
+          placeholder="Masukin alamat lengkap"
           required
           rows={3}
         />
@@ -309,14 +376,19 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
 
       {/* Nomor Telepon */}
       <div className="space-y-2">
-        <Label htmlFor="nomorTelepon" className="text-sm font-semibold text-gray-700">
-          Nomor Telepon / WhatsApp <span className="text-red-500">*</span>
+        <Label
+          htmlFor="nomorTelepon"
+          className="text-sm font-semibold text-gray-700"
+        >
+          Nomor Telepon / WhatsApp aktif <span className="text-red-500">*</span>
         </Label>
         <Input
           id="nomorTelepon"
           type="tel"
           value={formData.nomorTelepon}
-          onChange={(e) => setFormData(prev => ({ ...prev, nomorTelepon: e.target.value }))}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, nomorTelepon: e.target.value }))
+          }
           placeholder="08xxxxxxxxxx"
           required
           className="h-11"
@@ -334,7 +406,7 @@ export default function MapabaForm({ fakultasList }: { fakultasList: Fakultas[] 
             Mengirim...
           </>
         ) : (
-          'Daftar MAPABA'
+          "Daftar MAPABA"
         )}
       </Button>
     </form>
