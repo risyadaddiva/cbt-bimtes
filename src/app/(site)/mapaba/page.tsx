@@ -63,10 +63,10 @@ export default async function MapabaPage() {
                 </h2>
                 <p className="text-gray-600 max-w-xl mx-auto">
                   Lengkapi formulir di bawah ini untuk mendaftar sebagai calon anggota baru PMII.
-                  Pastikan semua data terisi dengan benar.
+                  Pastikan semua data terisi lengkap dengan benar.
                 </p>
                 <p className="text-red-600 font-bold">
-                  Penting: Pastikan anda sudah transfer uang pendaftaran sebesar Rp. 50.000 ke nomor rekening
+                  Silakan lakukan investasi sebesar Rp50.000 ke rekening berikut untuk menyelesaikan proses pendaftaran.
                 </p>
                 <p className="text-gray-600 font-bold">
                   BRI : 4053 0101 3239 534
