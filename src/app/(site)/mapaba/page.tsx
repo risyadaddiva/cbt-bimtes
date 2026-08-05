@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { Shield, AlertCircle } from 'lucide-react';
 import MapabaForm from './_components/mapaba-form';
@@ -63,6 +64,31 @@ export default async function MapabaPage() {
                 <p className="text-gray-600 max-w-xl mx-auto">
                   Lengkapi formulir di bawah ini untuk mendaftar sebagai calon anggota baru PMII.
                   Pastikan semua data terisi dengan benar.
+                </p>
+                <p className="text-red-600 font-bold">
+                  Penting: Pastikan anda sudah transfer uang pendaftaran sebesar Rp. 50.000 ke nomor rekening
+                </p>
+                <p className="text-gray-600 font-bold">
+                  BRI : 4053 0101 3239 534
+                </p>
+                <p className="text-gray-600 font-bold">
+                  atau ke DANA <br />
+                  0813 1324 4794
+                </p>
+                <p className="text-gray-600 font-bold">
+                  A.N. Dendi Kusnadi
+                </p>
+                <p className="text-red-600 font-bold">
+                  Setelah transfer, konfirmasi ke panitia
+                </p>
+                <p className="text-gray-600 font-bold">
+                  Narahubung:
+                </p>
+                <p className='bg-white py-4 px-6 rounded-full text-black font-bold'> 
+                  <Link href="https://wa.me/628997878666" target="_blank" rel="noopener noreferrer">Sahabat Sehu</Link>
+                </p>
+                <p className='bg-white py-4 px-6 rounded-full text-black font-bold'>
+                  <Link href="https://wa.me/6285601637512" target="_blank" rel="noopener noreferrer">Sahabat Richard</Link>
                 </p>
               </div>
 

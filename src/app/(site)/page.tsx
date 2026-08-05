@@ -8,6 +8,7 @@ import {
   Heart,
   Lightbulb,
   Shield,
+  Users,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -105,6 +106,25 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <Link
+              href="/mapaba"
+              className="group block card-hover bg-white rounded-xl p-6 border shadow-sm flex flex-col items-center text-center ring-2 ring-pmii-gold/20"
+            >
+              <div className="w-16 h-16 rounded-full bg-amber-100 text-pmii-gold flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Users className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                MAPABA
+              </h3>
+              <p className="text-sm text-gray-500 mb-4 flex-1">
+                Daftarkan dirimu menjadi anggota PMII.
+              </p>
+              <span className="text-pmii-gold font-semibold text-sm group-hover:underline flex items-center">
+                Daftar Sekarang <span className="ml-1">→</span>
+              </span>
+            </Link>
+        
             <Link
               href="/berita"
               className="group block card-hover bg-white rounded-xl p-6 border shadow-sm flex flex-col items-center text-center"
@@ -157,24 +177,6 @@ export default async function HomePage() {
               </p>
               <span className="text-purple-600 font-semibold text-sm group-hover:underline flex items-center">
                 Lihat <span className="ml-1">→</span>
-              </span>
-            </Link>
-
-            <Link
-              href="/login"
-              className="group block card-hover bg-white rounded-xl p-6 border shadow-sm flex flex-col items-center text-center ring-2 ring-pmii-gold/20"
-            >
-              <div className="w-16 h-16 rounded-full bg-amber-100 text-pmii-gold flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Monitor className="h-8 w-8" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                CBT BIMTES 2026
-              </h3>
-              <p className="text-sm text-gray-500 mb-4 flex-1">
-                Platform ujian masuk tryout dan bimbingan tes PMII UIN SGD.
-              </p>
-              <span className="text-pmii-gold font-semibold text-sm group-hover:underline flex items-center">
-                Akses Platform <span className="ml-1">→</span>
               </span>
             </Link>
           </div>
