@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Loader2, Upload, X, ImageIcon } from "lucide-react";
 
 interface Jurusan {
   id: string;
@@ -18,6 +18,8 @@ interface Fakultas {
   nama: string;
   jurusans: Jurusan[];
 }
+
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
 export default function MapabaForm({
   fakultasList,
@@ -42,6 +44,12 @@ export default function MapabaForm({
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  // Upload bukti bayar
+  const [buktiBayar, setBuktiBayar] = useState<File | null>(null);
+  const [buktiBayarPreview, setBuktiBayarPreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     if (formData.fakultasId) {
       const selectedFakultas = fakultasList.find(
@@ -54,16 +62,59 @@ export default function MapabaForm({
     }
   }, [formData.fakultasId, fakultasList]);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setFileError("");
+
+    if (!file) {
+      setBuktiBayar(null);
+      setBuktiBayarPreview(null);
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setFileError("Ukuran file terlalu besar. Maksimal 1MB.");
+      setBuktiBayar(null);
+      setBuktiBayarPreview(null);
+      e.target.value = "";
+      return;
+    }
+
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+    if (!allowed.includes(file.type)) {
+      setFileError("Format file harus JPG, PNG, atau WebP.");
+      setBuktiBayar(null);
+      setBuktiBayarPreview(null);
+      e.target.value = "";
+      return;
+    }
+
+    setBuktiBayar(file);
+    const reader = new FileReader();
+    reader.onload = (ev) => setBuktiBayarPreview(ev.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveFile = () => {
+    setBuktiBayar(null);
+    setBuktiBayarPreview(null);
+    setFileError("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
 
     try {
+      const fd = new FormData();
+      Object.entries(formData).forEach(([k, v]) => fd.append(k, String(v)));
+      if (buktiBayar) fd.append("buktiBayar", buktiBayar);
+
       const res = await fetch("/api/site/mapaba", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: fd,
       });
 
       const data = await res.json();
@@ -81,6 +132,26 @@ export default function MapabaForm({
     }
   };
 
+  const resetForm = () => {
+    setSuccess(false);
+    setFormData({
+      nama: "",
+      fakultasId: "",
+      jurusanId: "",
+      semester: "",
+      jenisKelamin: "",
+      asalSekolah: "",
+      isPesantren: false,
+      namaPesantren: "",
+      motivasi: "",
+      alamat: "",
+      nomorTelepon: "",
+    });
+    setBuktiBayar(null);
+    setBuktiBayarPreview(null);
+    setFileError("");
+  };
+
   if (success) {
     return (
       <div className="text-center py-16">
@@ -95,22 +166,7 @@ export default function MapabaForm({
           Bandung. Data Anda telah kami terima dan akan segera diproses.
         </p>
         <Button
-          onClick={() => {
-            setSuccess(false);
-            setFormData({
-              nama: "",
-              fakultasId: "",
-              jurusanId: "",
-              semester: "",
-              jenisKelamin: "",
-              asalSekolah: "",
-              isPesantren: false,
-              namaPesantren: "",
-              motivasi: "",
-              alamat: "",
-              nomorTelepon: "",
-            });
-          }}
+          onClick={resetForm}
           variant="outline"
           className="border-pmii-blue text-pmii-blue hover:bg-blue-50"
         >
@@ -393,6 +449,66 @@ export default function MapabaForm({
           required
           className="h-11"
         />
+      </div>
+
+      {/* Bukti Pembayaran */}
+      <div className="space-y-2">
+        <Label className="text-sm font-semibold text-gray-700">
+          Bukti Pembayaran{" "}
+          <span className="text-xs font-normal text-gray-500">
+            (Opsional, maks. 1MB — JPG/PNG/WebP)
+          </span>
+        </Label>
+
+        {buktiBayarPreview ? (
+          <div className="relative rounded-xl overflow-hidden border-2 border-dashed border-pmii-blue/40 bg-blue-50/30">
+            <img
+              src={buktiBayarPreview}
+              alt="Preview bukti pembayaran"
+              className="w-full max-h-56 object-contain"
+            />
+            <button
+              type="button"
+              onClick={handleRemoveFile}
+              className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-md transition-colors"
+              title="Hapus foto"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <div className="px-3 py-2 bg-white/80 border-t border-gray-200 text-xs text-gray-600 flex items-center gap-1.5">
+              <ImageIcon className="w-3.5 h-3.5" />
+              {buktiBayar?.name} — {((buktiBayar?.size || 0) / 1024).toFixed(0)} KB
+            </div>
+          </div>
+        ) : (
+          <label
+            htmlFor="buktiBayar"
+            className="flex flex-col items-center justify-center w-full h-36 rounded-xl border-2 border-dashed border-gray-300 hover:border-pmii-blue/60 bg-gray-50 hover:bg-blue-50/30 cursor-pointer transition-colors"
+          >
+            <Upload className="w-8 h-8 text-gray-400 mb-2" />
+            <span className="text-sm text-gray-500">
+              Klik untuk unggah foto bukti bayar
+            </span>
+            <span className="text-xs text-gray-400 mt-1">
+              JPG, PNG, WebP · Maks. 1MB
+            </span>
+            <input
+              ref={fileInputRef}
+              id="buktiBayar"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleFileChange}
+              className="sr-only"
+            />
+          </label>
+        )}
+
+        {fileError && (
+          <p className="text-sm text-red-600 flex items-center gap-1">
+            <X className="w-3.5 h-3.5" />
+            {fileError}
+          </p>
+        )}
       </div>
 
       <Button

@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, Trash2, Users, GraduationCap, BookOpen, Search } from 'lucide-react';
+import { Loader2, Plus, Trash2, Users, GraduationCap, BookOpen, Search, MessageCircle, Download, ImageIcon, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Jurusan {
@@ -36,9 +36,18 @@ interface Registration {
   motivasi?: string;
   alamat: string;
   nomorTelepon: string;
+  buktiBayar?: string;
   createdAt: string;
   fakultas: { nama: string };
   jurusan: { nama: string };
+}
+
+// Convert 08xxx to 628xxx for WhatsApp
+function toWaNumber(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.startsWith('0')) return '62' + digits.slice(1);
+  if (digits.startsWith('62')) return digits;
+  return '62' + digits;
 }
 
 export default function AdminMapabaPage() {
@@ -59,6 +68,7 @@ export default function AdminMapabaPage() {
   const [regTotal, setRegTotal] = useState(0);
   const [regLoading, setRegLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   // Fetch settings
   useEffect(() => {
@@ -206,6 +216,36 @@ export default function AdminMapabaPage() {
       }
     } catch {
       toast.error('Gagal menghapus');
+    }
+  };
+
+  // Export to Excel
+  const handleExportExcel = async () => {
+    try {
+      const { utils, writeFile } = await import('xlsx');
+      const rows = registrations.map((reg, i) => ({
+        'No': i + 1,
+        'Nama': reg.nama,
+        'Fakultas': reg.fakultas.nama,
+        'Jurusan': reg.jurusan.nama,
+        'Semester': reg.semester,
+        'Jenis Kelamin': reg.jenisKelamin,
+        'Asal Sekolah': reg.asalSekolah || '-',
+        'Pesantren': reg.isPesantren ? (reg.namaPesantren || 'Ya') : 'Tidak',
+        'Motivasi': reg.motivasi || '-',
+        'Alamat': reg.alamat,
+        'Nomor Telepon': reg.nomorTelepon,
+        'WhatsApp': `https://wa.me/${toWaNumber(reg.nomorTelepon)}`,
+        'Bukti Bayar': reg.buktiBayar ? 'Ada' : 'Tidak Ada',
+        'Tanggal Daftar': new Date(reg.createdAt).toLocaleString('id-ID'),
+      }));
+      const ws = utils.json_to_sheet(rows);
+      const wb = utils.book_new();
+      utils.book_append_sheet(wb, ws, 'Pendaftar MAPABA');
+      writeFile(wb, `pendaftar-mapaba-${new Date().toISOString().slice(0,10)}.xlsx`);
+      toast.success('Data berhasil diunduh sebagai Excel');
+    } catch {
+      toast.error('Gagal mengekspor data');
     }
   };
 
@@ -373,6 +413,24 @@ export default function AdminMapabaPage() {
         </Card>
       </div>
 
+      {/* Preview Modal */}
+      {previewImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+          onClick={() => setPreviewImage(null)}
+        >
+          <div className="relative max-w-lg w-full mx-4" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setPreviewImage(null)}
+              className="absolute -top-3 -right-3 bg-white rounded-full p-1 shadow-lg text-gray-700 hover:text-red-600 z-10"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <img src={previewImage} alt="Bukti Pembayaran" className="w-full rounded-xl shadow-2xl" />
+          </div>
+        </div>
+      )}
+
       {/* Registrations Table */}
       <Card className="border-border shadow-sm">
         <CardHeader>
@@ -381,14 +439,26 @@ export default function AdminMapabaPage() {
               <Users className="h-5 w-5" />
               Daftar Pendaftar ({regTotal})
             </CardTitle>
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Cari nama..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Cari nama..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportExcel}
+                disabled={registrations.length === 0}
+                className="gap-1.5 whitespace-nowrap"
+              >
+                <Download className="h-4 w-4" />
+                Unduh Excel
+              </Button>
             </div>
           </div>
         </CardHeader>
@@ -409,7 +479,8 @@ export default function AdminMapabaPage() {
                     <TableHead>JK</TableHead>
                     <TableHead>Asal Sekolah / Pesantren</TableHead>
                     <TableHead>Motivasi</TableHead>
-                    <TableHead>Telepon</TableHead>
+                    <TableHead>Telepon / WA</TableHead>
+                    <TableHead>Bukti Bayar</TableHead>
                     <TableHead>Tanggal</TableHead>
                     <TableHead className="w-12"></TableHead>
                   </TableRow>
@@ -440,7 +511,32 @@ export default function AdminMapabaPage() {
                       <TableCell className="text-sm max-w-[200px] truncate" title={reg.motivasi || undefined}>
                         {reg.motivasi || '-'}
                       </TableCell>
-                      <TableCell className="text-sm">{reg.nomorTelepon}</TableCell>
+                      <TableCell className="text-sm">
+                        <div>{reg.nomorTelepon}</div>
+                        <a
+                          href={`https://wa.me/${toWaNumber(reg.nomorTelepon)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-green-600 hover:text-green-700 mt-0.5"
+                        >
+                          <MessageCircle className="h-3 w-3" />
+                          Chat WA
+                        </a>
+                      </TableCell>
+                      <TableCell>
+                        {reg.buktiBayar ? (
+                          <button
+                            type="button"
+                            onClick={() => setPreviewImage(reg.buktiBayar!)}
+                            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 underline"
+                          >
+                            <ImageIcon className="h-3.5 w-3.5" />
+                            Lihat
+                          </button>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">—</span>
+                        )}
+                      </TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {new Date(reg.createdAt).toLocaleDateString('id-ID')}
                       </TableCell>

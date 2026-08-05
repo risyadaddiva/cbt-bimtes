@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+
 // GET — public: get registration status + fakultas/jurusan list
 export async function GET() {
   try {
@@ -25,7 +27,7 @@ export async function GET() {
   }
 }
 
-// POST — public: submit MAPABA registration
+// POST — public: submit MAPABA registration (multipart/form-data)
 export async function POST(req: NextRequest) {
   try {
     // Check if registration is open
@@ -37,20 +39,45 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Pendaftaran MAPABA belum dibuka' }, { status: 403 });
     }
 
-    const body = await req.json();
-    const {
-      nama,
-      fakultasId,
-      jurusanId,
-      semester,
-      jenisKelamin,
-      asalSekolah,
-      isPesantren,
-      namaPesantren,
-      motivasi,
-      alamat,
-      nomorTelepon,
-    } = body;
+    const contentType = req.headers.get('content-type') || '';
+    let nama: string, fakultasId: string, jurusanId: string, semester: string;
+    let jenisKelamin: string, asalSekolah: string, isPesantren: boolean;
+    let namaPesantren: string, motivasi: string, alamat: string, nomorTelepon: string;
+    let buktiBayar: string | null = null;
+
+    if (contentType.includes('multipart/form-data')) {
+      const formData = await req.formData();
+      nama = formData.get('nama') as string;
+      fakultasId = formData.get('fakultasId') as string;
+      jurusanId = formData.get('jurusanId') as string;
+      semester = formData.get('semester') as string;
+      jenisKelamin = formData.get('jenisKelamin') as string;
+      asalSekolah = formData.get('asalSekolah') as string;
+      isPesantren = formData.get('isPesantren') === 'true';
+      namaPesantren = formData.get('namaPesantren') as string;
+      motivasi = formData.get('motivasi') as string;
+      alamat = formData.get('alamat') as string;
+      nomorTelepon = formData.get('nomorTelepon') as string;
+
+      const file = formData.get('buktiBayar') as File | null;
+      if (file && file.size > 0) {
+        if (file.size > MAX_FILE_SIZE) {
+          return NextResponse.json({ error: 'Ukuran bukti pembayaran maksimal 1MB' }, { status: 400 });
+        }
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+        if (!allowedTypes.includes(file.type)) {
+          return NextResponse.json({ error: 'Format file harus JPG, PNG, atau WebP' }, { status: 400 });
+        }
+        const bytes = await file.arrayBuffer();
+        const base64 = Buffer.from(bytes).toString('base64');
+        buktiBayar = `data:${file.type};base64,${base64}`;
+      }
+    } else {
+      // Fallback JSON (backward compat)
+      const body = await req.json();
+      ({ nama, fakultasId, jurusanId, semester, jenisKelamin, asalSekolah,
+        isPesantren, namaPesantren, motivasi, alamat, nomorTelepon } = body);
+    }
 
     // Basic validation
     if (!nama || !fakultasId || !jurusanId || !semester || !jenisKelamin || !alamat || !nomorTelepon) {
@@ -90,6 +117,7 @@ export async function POST(req: NextRequest) {
         motivasi: motivasi || null,
         alamat,
         nomorTelepon,
+        buktiBayar,
       } as any,
     });
 

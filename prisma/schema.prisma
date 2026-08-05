@@ -324,6 +324,7 @@ model MapabaRegistration {
   motivasi      String?
   alamat        String
   nomorTelepon  String
+  buktiBayar    String?  // base64 encoded payment proof image
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
