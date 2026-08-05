@@ -105,6 +105,13 @@ export default function MapabaForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!buktiBayar) {
+      setFileError("Bukti pembayaran wajib diunggah.");
+      document.getElementById("buktiBayar-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -452,11 +459,11 @@ export default function MapabaForm({
       </div>
 
       {/* Bukti Pembayaran */}
-      <div className="space-y-2">
+      <div id="buktiBayar-section" className="space-y-2">
         <Label className="text-sm font-semibold text-gray-700">
-          Bukti Pembayaran{" "}
+          Bukti Pembayaran <span className="text-red-500">*</span>{" "}
           <span className="text-xs font-normal text-gray-500">
-            (Opsional, maks. 1MB — JPG/PNG/WebP)
+            (maks. 1MB — JPG/PNG/WebP)
           </span>
         </Label>
 
@@ -483,10 +490,14 @@ export default function MapabaForm({
         ) : (
           <label
             htmlFor="buktiBayar"
-            className="flex flex-col items-center justify-center w-full h-36 rounded-xl border-2 border-dashed border-gray-300 hover:border-pmii-blue/60 bg-gray-50 hover:bg-blue-50/30 cursor-pointer transition-colors"
+            className={`flex flex-col items-center justify-center w-full h-36 rounded-xl border-2 border-dashed cursor-pointer transition-colors ${
+              fileError
+                ? "border-red-400 bg-red-50 hover:bg-red-50/80"
+                : "border-gray-300 hover:border-pmii-blue/60 bg-gray-50 hover:bg-blue-50/30"
+            }`}
           >
-            <Upload className="w-8 h-8 text-gray-400 mb-2" />
-            <span className="text-sm text-gray-500">
+            <Upload className={`w-8 h-8 mb-2 ${fileError ? "text-red-400" : "text-gray-400"}`} />
+            <span className={`text-sm ${fileError ? "text-red-500 font-medium" : "text-gray-500"}`}>
               Klik untuk unggah foto bukti bayar
             </span>
             <span className="text-xs text-gray-400 mt-1">
